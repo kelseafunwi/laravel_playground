@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Events\OrderShipped;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Event;
 
 class ExampleTest extends TestCase
 {
@@ -15,5 +17,11 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
+    }
+
+    public function test_orders_can_be_shipped() {
+        Event::fake();
+
+        Event::assertDispatched(OrderShipped::class);
     }
 }
