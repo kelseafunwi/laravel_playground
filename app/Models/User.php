@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,5 +51,34 @@ class User extends Authenticatable
         return $this->morphToMany(Comment::class, 'commentable');
     }
 
+//    public function podcasts(): BelongsToMany {
+//        // this is going to make the intermediate table accessible with the term subscription
+//        // and make the timestamps available with it as properties.
+//        return $this->belongsToMany(Podcast::class)->as('subscription')->withTimestamps();
+//    }
+
+    public function podcasts() : BelongsToMany {
+        return $this->belongsToMany(Podcast::class)->using(PodcastUser::class);
+    }
+
+    public function getExpiredPodcast(): BelongsToMany {
+        return $this->belongsToMany(Podcast::class)->as('subscription')
+                ->wherePivotNotNull('expired_at');
+    }
+
+    public function getActivePodcast():BelongsToMany {
+        return $this->belongsToMany(Podcast::class)->as('subscription')
+                ->wherePivot('active', 1);
+    }
+
+    // get the my priority podcast
+    public function priorityPodcast(): BelongsToMany {
+        return $this->belongsToMany(Podcast::class)->as('subscription')
+            ->wherePivotIn('priority', [1, 2]);
+    }
+
+    public function image(): MorphOne {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 
 }
