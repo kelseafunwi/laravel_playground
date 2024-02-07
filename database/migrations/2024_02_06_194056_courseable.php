@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('courseable', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('course_id')->default(1);
             $table->bigInteger('courseable_id');
             $table->string('courseable_type');
         });

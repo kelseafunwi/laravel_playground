@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('text');
-            $table->foreignId('user_id')->references('id')->on('users');
+            $table->string('comment');
+            $table->string('commentable_type');
+            $table->unsignedBigInteger('commentable_id');
+            // tells us whether it is related to the teacher, student or user
             $table->timestamps();
         });
     }

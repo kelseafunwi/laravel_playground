@@ -13,4 +13,8 @@ class Teacher extends Model
     public function subjects(): MorphToMany {
         return $this->morphToMany(Subject::class, 'courseable');
     }
+
+    public function comments(): MorphToMany {
+        return $this->morphToMany(Comment::class, 'commentable');
+    }
 }

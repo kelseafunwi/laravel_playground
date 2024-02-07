@@ -9,6 +9,10 @@ class Subject extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'something'
+    ];
+
     public function teachers() {
         return $this->morphedByMany(Teacher::class, 'courseable');
     }
